@@ -4,9 +4,13 @@ An example Discount Code Generator based on [Symfony Docker](https://github.com/
 
 ![CI](https://github.com/ppoz21/symfony-discounts-example/workflows/CI/badge.svg)
 
-## Dependencies
+## Tech stack
 
-To be done
+| Technology | Version |
+|------------|:-------:|
+| PHP        |   8.3   |
+| Symfony    |   6.4   |
+| PostgreSQL |   16    |
 
 ## License
 
