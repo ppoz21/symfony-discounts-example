@@ -58,7 +58,7 @@ jobs:
         run: docker compose exec -T php bin/console -e test doctrine:migrations:migrate --no-interaction
       -
         name: Check code style
-        run: docker compose exec -T php composer github-actions
+        run: docker compose exec -T php composer github:actions
       -
         name: Run PHPUnit
         if: false # Remove this line if PHPUnit is installed
