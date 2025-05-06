@@ -54,6 +54,16 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "code:analysis": [
+            "@php tools/vendor/bin/phpstan analyze --memory-limit='512M'",
+            "tools/vendor/bin/php-cs-fixer fix --dry-run -v"
+        ],
+        "code:fix": [
+            "tools/vendor/bin/php-cs-fixer fix"
+        ],
+        "github:actions": [
+            "@code:analysis"
         ]
     },
     "conflict": {
