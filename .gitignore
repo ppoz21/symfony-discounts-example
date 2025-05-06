@@ -12,3 +12,9 @@
 ###> IDE ##
 /.idea/
 ###< IDE ##
+
+###> tools ###
+/tools/vendor/
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
+###< tools ###
