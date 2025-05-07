@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DiscountRepository::class)]
-#[UniqueEntity('code_prefix')]
+#[UniqueEntity('codePrefix')]
 class Discount
 {
     #[ORM\Id]
