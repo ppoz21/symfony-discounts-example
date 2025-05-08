@@ -29,7 +29,7 @@ final class GenerateDiscountCodesHandler
         }
 
         $codesNeeded = $this->codesNeeded($discount);
-        while ($this->codesNeeded($discount) > 0) {
+        while ($codesNeeded > 0) {
             $codes = [];
 
             for ($i = 0; $i < $codesNeeded && $i < self::BATCH_INSERT_SIZE; ++$i) {
