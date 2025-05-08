@@ -87,7 +87,7 @@ final class DiscountCrudController extends AbstractCrudController
     private static function generateSingleCode(string $prefix): string
     {
         $chars = array_flip(
-            range(0, 9) + range('A', 'Z')
+            array_merge(range(0, 9), range('A', 'Z'))
         );
 
         $randomString = '';
