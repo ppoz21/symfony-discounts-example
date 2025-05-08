@@ -11,11 +11,8 @@ An example Discount Code Generator based on [Symfony Docker](https://github.com/
 | PHP        |   8.3   |
 | Symfony    |   6.4   |
 | PostgreSQL |   16    |
-
-## License
-
-Symfony Docker is available under the MIT License.
+| RabbitMQ   |    3    |
 
 ## Credits
 
-Created by [Paweł Palacz](https://github.com/ppoz21), sponsored by [Fabrity S.A.](https://fabrity.com/)
+Created by [Paweł Palacz](https://github.com/ppoz21) at [Fabrity S.A.](https://fabrity.com/)
