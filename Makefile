@@ -65,3 +65,8 @@ cf: ## Fix code style
 	@$(DOCKER_COMP) run --rm -T --no-deps php composer code:fix
 ca: cf  ## cf and static analysis
 	@$(DOCKER_COMP) run --rm -T --no-deps php composer code:analysis
+
+
+## —— Worker 👷 ——————————————————————————————————————————————————————————————
+async: ## Runs async worker
+	@$(SYMFONY) messenger:consume async -vvv

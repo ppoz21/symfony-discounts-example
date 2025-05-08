@@ -18,7 +18,12 @@ final class GenerateDiscountCodesHandler
     public function __construct(
         private readonly DiscountRepository $discountRepository,
         private readonly DiscountCodeRepository $discountCodeRepository,
-    ) {}
+    ) {
+        if (php_sapi_name() === 'cli') {
+            ini_set('memory_limit', -1);
+            set_time_limit(0);
+        }
+    }
 
     public function __invoke(GenerateDiscountCodesCommand $command): void
     {
