@@ -4,45 +4,44 @@ declare(strict_types=1);
 
 namespace App\Messenger\Handler;
 
-use App\Entity\DiscountCode;
+use App\Entity\Discount;
 use App\Messenger\Command\GenerateDiscountCodesCommand;
 use App\Repository\DiscountCodeRepository;
 use App\Repository\DiscountRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
 final class GenerateDiscountCodesHandler
 {
+    private const int BATCH_INSERT_SIZE = 50;
+
     public function __construct(
         private readonly DiscountRepository $discountRepository,
         private readonly DiscountCodeRepository $discountCodeRepository,
-        private readonly EntityManagerInterface $em
     ) {}
 
     public function __invoke(GenerateDiscountCodesCommand $command): void
     {
-        ini_set('memory_limit', -1);
-        set_time_limit(0);
-
         $discount = $this->discountRepository->find($command->discountId);
 
         if (!$discount) {
             return;
         }
 
-        for ($i = 0; $i < $discount->getNumberOfCodes(); ++$i) {
-            do {
-                $code = self::generateSingleCode($discount->getCodePrefix());
-            } while ($this->discountCodeRepository->findOneBy(['code' => $code]));
+        $codesNeeded = $this->codesNeeded($discount);
+        while ($codesNeeded > 0) {
+            $codes = [];
 
-            $codeObj = (new DiscountCode())
-                ->setCode($code)
-                ->setDiscount($discount)
-            ;
+            for ($i = 0; $i < $codesNeeded && $i < self::BATCH_INSERT_SIZE; ++$i) {
+                $codes[] = self::generateSingleCode(prefix: $discount->getCodePrefix());
+            }
 
-            $this->em->persist($codeObj);
-            $this->em->flush();
+            $this->discountCodeRepository->insertInBatch(
+                discountId: $discount->getId(),
+                codes: $codes
+            );
+
+            $codesNeeded = $this->codesNeeded($discount);
         }
     }
 
@@ -59,5 +58,15 @@ final class GenerateDiscountCodesHandler
         }
 
         return (str_ends_with($prefix, '_') ? $prefix : ($prefix.'_')).$randomString;
+    }
+
+    private function codesNeeded(Discount $discount): int
+    {
+        // forcing reload of entity from db
+        $discount = $this->discountRepository->find($discount->getId());
+
+        $codesCount = $this->discountCodeRepository->countByDiscount($discount);
+
+        return $discount->getNumberOfCodes() - $codesCount;
     }
 }
